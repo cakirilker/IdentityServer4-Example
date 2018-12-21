@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h2>@ViewData["Title"]</h2>
+<h5>@User.Claims.First(c => c.Type == "email").Value</h5>
+
+<a class="btn btn-primary" id="callApi">Call Employees API</a>
+<div id="result"></div>
+@foreach (var claim in User.Claims)
+{
+    <dt>@claim.Type</dt>
+    <dd>@claim.Value</dd>
+}
+
+@section Scripts{
+    <script>
+     $("#callApi").on("click", () => {
+        $.ajax({
+        type: 'GET',
+        url: '@Url.Action("CallApi", "Home")',
+        data: { staffRecordId: $("#Staff_Id").val() },
+        success: function (result) {
+            $("#result").text(result);
+        }});
+    })
+    </script>
+    }
